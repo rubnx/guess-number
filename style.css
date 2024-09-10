@@ -1,16 +1,19 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
-  /* background-color: honeydew; */
-  background: linear-gradient(15deg, #142850, #04ccb1);
+  background: linear-gradient(15deg, #142850, #04ccb1, #142850);
+  background-attachment: fixed;
+  margin: 0;
+  padding: 0;
 }
 
 .app {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  /* gap: 1em; */
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
 .game {
@@ -18,24 +21,31 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2em;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 600px;
 }
 
 .subtext {
-  font-size: 1.5em;
+  font-size: clamp(1rem, 4vw, 1.5rem);
   color: floralwhite;
+  text-align: center;
 }
 
 .guess-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 10em;
-  padding: 0.2em;
+  justify-content: center;
+  font-size: clamp(3rem, 30vw, 13rem);
+  padding: 0.1em;
   border: 1px solid lightgrey;
   border-radius: 20px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   background-color: floralwhite;
+  width: 80%;
+  aspect-ratio: 1/1.2;
+  max-width: 300px;
 }
 
 .guess-card .emoji {
@@ -44,6 +54,7 @@ body {
 
 .guess-card .text {
   font-size: 0.2em;
+  color: rgba(0, 0, 0, 0.7);
 }
 
 .btn {
@@ -51,14 +62,17 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.5em;
-  font-size: 1.2em;
-  padding: 1em 2em;
+  font-size: clamp(1rem, 3vw, 1.2rem);
+  padding: 0.8em 1.5em;
   border: 1px solid lightcoral;
   border-radius: 80px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   color: rgba(0, 0, 0, 0.7);
   background-color: lightcoral;
+  width: 100%;
+  max-width: 300px;
 }
+
 .btn:hover {
   opacity: 0.9;
   cursor: pointer;
@@ -72,32 +86,32 @@ body {
 h1 {
   display: flex;
   flex-direction: column;
-  font-size: 3em;
+  font-size: clamp(1.5rem, 5vw, 3rem);
   color: white;
   text-align: center;
-  margin-top: 1em;
+  margin-top: 1rem;
   margin-bottom: 0;
 }
+
 h1 span {
   font-size: 1.5em;
 }
 
-@media (max-width: 765px) {
-  h1 {
-    font-size: 2em;
-  }
-  .subtext {
-    font-size: 1.2em;
-  }
+.form {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .form input {
-  font-size: 2em;
+  font-size: clamp(1rem, 4vw, 1.5rem);
   text-align: center;
-  padding: 0.5em;
+  padding: 0.8em 1.5em;
   border-radius: 50px;
   border: 1px solid lightgrey;
   outline: none;
+  width: 100%;
+  max-width: 300px;
 }
 
 .form input:focus {
@@ -105,13 +119,52 @@ h1 span {
 }
 
 .message {
-  font-size: 2em;
+  font-size: clamp(1.2rem, 5vw, 2rem);
   text-align: center;
   color: floralwhite;
+  line-height: 3.5rem;
+}
+
+.message-number,
+.message-number-green {
+  font-weight: bold;
+  background-color: white;
+  padding: 0.3em 0.5em;
+  color: crimson;
+  border-radius: 0.5rem;
+}
+
+.message-number-green {
+  color: green;
+}
+
+.guessed-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+  list-style: none;
+  font-size: 1.5em;
+  padding-left: 0;
 }
 
 .footer {
   text-align: center;
   color: slategrey;
-  margin-top: 3em;
+  margin-top: 1rem;
+  font-size: clamp(0.8rem, 3vw, 1rem);
+}
+
+@media (max-width: 480px) {
+  .game {
+    gap: 0.5rem;
+  }
+
+  .btn {
+    padding: 0.6em 1.2em;
+  }
+
+  .form input {
+    padding: 0.6em 1.2em;
+  }
 }
