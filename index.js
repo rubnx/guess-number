@@ -1,43 +1,45 @@
 'use strict';
 
 // Select elements
-const guessCard = document.querySelector('.guess-card');
-const guessForm = document.querySelector('.form');
-const guessFormInput = document.querySelector('.form input');
+let guessCard = document.querySelector('.guess-card');
+let guessForm = document.querySelector('.form');
+let guessFormInput = document.querySelector('.form input');
 const message = document.querySelector('.message');
 const resetButton = document.querySelector('.btn');
 const footerYear = document.querySelector('.currentYear');
 
-// Load the current year when page loads
-document.addEventListener('DOMContentLoaded', getYear);
+// EVENT LISTENERS
+document.addEventListener('DOMContentLoaded', getYear); // Load the current year when page loads
+guessForm.addEventListener('submit', guessNumber);
+resetButton.addEventListener('click', reset);
 
-// Get current year
+// GET CURRENT YEAR FOR THE FOOTER
 function getYear() {
   footerYear.textContent = new Date().getFullYear();
 }
 
-// Computer selects a random number
+// COMPUTER SELECTS A RANDOM NUMBER
+// Declare randNum variable
 let randNum;
+// Function to initialize randNum variable
 function randomNumber() {
   randNum = Math.floor(Math.random() * 100) + 1;
+  console.log(randNum); // Console log the variable for debugging
 }
+// Initialize randNum variable
 randomNumber();
-console.log(randNum);
 
-guessForm.addEventListener('submit', guessNumber);
-resetButton.addEventListener('click', reset);
-
-// Numbers already guessed
+// List of numbers already guessed
 let guessed = [];
 
 // Number of guesses
 let numGuess = 0;
 
+// GUESS NUMBER FUNCTIONALITY (WHEN GUESS IS SUBMITTED)
 function guessNumber(e) {
-  e.preventDefault();
+  e.preventDefault(); // Prevent reloading the page after form submission
 
-  // Input should not be empty
-  if (guessFormInput.value === '') return;
+  if (guessFormInput.value === '') return; // Input should not be empty
 
   // If there is an existing message, remove it
   const existingMessage = document.querySelector('.message');
@@ -48,12 +50,15 @@ function guessNumber(e) {
     return arr.some((item) => item?.number === targetNumber);
   }
 
+  // Number guessed by user
   const number = Number(guessFormInput.value);
 
+  // Declare variables for the content of the card and the message that will appear
   let messageText, cardText;
 
+  // If user guesses the right number
   if (number === randNum) {
-    numGuess++;
+    numGuess++; // Add 1 guess to number of guesses
     messageText = `Yes! <span class='message-number'>${number}</span> was the number. Well done! It took you ${
       numGuess === 1 ? 'just' : ''
     } <span class='message-number-green'>${numGuess}</span> ${
@@ -62,8 +67,9 @@ function guessNumber(e) {
     cardText = `${randNum} <span class='emoji'>🎉</span>`;
 
     updateMessage(cardText, messageText);
-    randomNumber(); // Generates a new Random Number to start the game again
-    console.log(randNum);
+    // guessForm.style.visibility = 'hidden';
+    guessForm.remove();
+    // randomNumber(); // Generates a new Random Number to start the game again
   } else if (number > randNum || number < randNum) {
     numGuess++;
 
@@ -133,8 +139,27 @@ function clearForm() {
 
 function reset() {
   // Select a new random number
-  const randNum = Math.floor(Math.random() * 100);
-  console.log(randNum);
+  randomNumber();
+
+  // If there is no form, create a form
+  const newGuessForm = document.querySelector('.form');
+  if (!newGuessForm) {
+    const newGuessForm = document.createElement('form');
+    newGuessForm.className = 'form';
+    newGuessForm.innerHTML = `<input
+      type="number"
+      placeholder="Type Your Guess Here..."
+      name="number"
+    />`;
+    guessCard.insertAdjacentElement('afterend', newGuessForm);
+
+    // Update global references
+    guessForm = newGuessForm;
+    guessFormInput = guessForm.querySelector('input');
+
+    // Add event listener to the new form
+    guessForm.addEventListener('submit', guessNumber);
+  }
 
   // If there is an existing message, remove it
   const existingMessage = document.querySelector('.message');
@@ -142,12 +167,12 @@ function reset() {
 
   // Reset card content
   guessCard.innerHTML = '❓';
-
   // Empty form in case there is anything
   guessFormInput.value = '';
 
-  // Empty guessed list and remove the diplayed list
-  guessed = [];
+  guessed = []; // Empty guessed list
+  numGuess = 0; // Reset the num of guesses to 0
+  // Remove the diplayed list
   let existingGuessedList = document.querySelector('.guessed-list');
   if (existingGuessedList) existingGuessedList.remove();
 }
