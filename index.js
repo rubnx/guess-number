@@ -17,7 +17,11 @@ function getYear() {
 }
 
 // Computer selects a random number
-const randNum = Math.floor(Math.random() * 100) + 1;
+let randNum;
+function randomNumber() {
+  randNum = Math.floor(Math.random() * 100) + 1;
+}
+randomNumber();
 console.log(randNum);
 
 guessForm.addEventListener('submit', guessNumber);
@@ -56,9 +60,11 @@ function guessNumber(e) {
       numGuess === 1 ? 'guess' : 'guesses'
     }.`;
     cardText = `${randNum} <span class='emoji'>🎉</span>`;
-  }
 
-  if (number > randNum || number < randNum) {
+    updateMessage(cardText, messageText);
+    randomNumber(); // Generates a new Random Number to start the game again
+    console.log(randNum);
+  } else if (number > randNum || number < randNum) {
     numGuess++;
 
     if (isNumberInArray(guessed, number)) {
@@ -82,7 +88,12 @@ function guessNumber(e) {
 
     // Update or create guessed list only if the guess is incorrect
     updateGuessedList();
+    updateMessage(cardText, messageText);
   }
+}
+
+// Update message content and card content
+function updateMessage(cardText, messageText) {
   guessCard.innerHTML = cardText;
 
   const newMessage = document.createElement('p');
